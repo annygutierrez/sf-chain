@@ -15,6 +15,10 @@ class Block {
           Data: ${this.data}
         `;
     }
+
+    static genesis() {
+        return new this('genesis time', '-----', 'f1rtsh-h45h', []);
+    }
 }
 
 module.exports = Block;
