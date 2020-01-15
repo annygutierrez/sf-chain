@@ -1,12 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const Blockchain = require('../blockchain');
+const P2pServer = require('./p2p-server');
 
 const HTTP_PORT = process.env.HTTP_PORT || 3001;
 // HTTP_PORT=3002 npm run dev
+// Run this to connect another node:
+//      HTTP_PORT=3003 P2P_PORT=5003 PEERS=ws://localhost:5001,ws://localhost:5002 npm run dev
 
 const app = express();
 const bc = new Blockchain();
+const p2pServer = new P2pServer(bc);
 
 app.use(bodyParser.json());
 
@@ -20,4 +24,5 @@ app.post('/mine', (req, res) => {
   res.redirect('/blocks');
 });
 
-app.listen(HTTP_PORT, () => console.log(`Listening on port ${HTTP_PORT}`))
+app.listen(HTTP_PORT, () => console.log(`Listening on port ${HTTP_PORT}`));
+p2pServer.listen();
